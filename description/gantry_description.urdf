@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <robot name="gantry_bot" xmlns:xacro="http://ros.org/wiki/xacro">
 
+    <xacro:include filename="$(find realsense2_description)/urdf/_l515.urdf.xacro" />
+
     <!-- Define robot constants -->
     <xacro:property name="arm_length" value="1.5"/>
     <xacro:property name="arm_width" value="0.15"/>
@@ -16,7 +18,7 @@
     
     <!-- Robot Base -->
     <link name="base_link">
-        <visual>
+        <!-- <visual>
             <origin xyz="0 0 ${pillar_length/2}"/>
             <geometry>
                 <cylinder radius="${pillar_diameter/2}" length="${pillar_length}"/>
@@ -24,11 +26,13 @@
             <material name="Cyan">
                 <color rgba="0 1.0 1.0 1.0"/>
             </material>
-        </visual>
+        </visual> -->
     </link>
 
 
-    <!-- Wheels -->
+    
+
+    <!-- Pulley Arms -->
     <xacro:macro name="pulley_arm" params="name rotation">
         <link name="${name}_link">
             <visual>
@@ -70,4 +74,12 @@
     <xacro:pulley_arm name="pulley_arm_1" rotation="0" />
     <xacro:pulley_arm name="pulley_arm_2" rotation="${2*pi/3}" />
     <xacro:pulley_arm name="pulley_arm_3" rotation="${4*pi/3}" />
+    
+    <xacro:sensor_l515 parent="base_link">
+        <origin xyz="1.75 0 -0.03" rpy="0 ${pi/2} ${pi}"/>
+    </xacro:sensor_l515>
+
+    <!-- <xacro:sensor_l515 parent="base_link">
+        <origin xyz="-1 0 -0.03" rpy="0 ${pi/2} ${pi}"/>
+    </xacro:sensor_l515> -->
 </robot>
