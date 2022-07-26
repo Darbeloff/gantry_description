@@ -4,13 +4,14 @@
     <xacro:include filename="$(find realsense2_description)/urdf/_l515.urdf.xacro" />
 
     <!-- Define robot constants -->
-    <xacro:property name="arm_length" value="0.4"/>
+    <xacro:property name="arm_length" value="0.5"/>
     <xacro:property name="arm_width" value="0.08"/>
     <xacro:property name="arm_height" value="0.04"/>
     
     <xacro:property name="winch_diameter" value="0.05"/>
     <xacro:property name="winch_length" value="0.07"/>
-    <xacro:property name="winch_z_offset" value="0.25"/>
+    <xacro:property name="winch_z_offset" value="0.07"/>
+    <xacro:property name="winch_x_offset" value="0.4"/>
 
     <xacro:property name="pillar_diameter" value="0.12"/>
     <xacro:property name="pillar_length" value="1"/>
@@ -36,7 +37,7 @@
     <xacro:macro name="pulley_arm" params="name rotation">
         <link name="${name}_link">
             <visual>
-                <origin xyz="${arm_length/2} 0 ${arm_height/2}"/>
+                <origin xyz="${arm_length/2 + pillar_diameter/2} 0 ${arm_height/2}"/>
                 <geometry>
                     <box size="${arm_length} ${arm_width} ${arm_height}"/>
                 </geometry>
@@ -45,7 +46,7 @@
                 </material>
             </visual>
             <visual>
-                <origin xyz="${arm_length - winch_diameter/2} 0 ${-winch_z_offset}" rpy="${pi/2} 0 0"/>
+                <origin xyz="${winch_x_offset - winch_diameter/2} 0 ${-winch_z_offset}" rpy="${pi/2} 0 0"/>
                 <geometry>
                     <cylinder radius="${winch_diameter/2}" length="${winch_length}"/>
                 </geometry>
@@ -76,17 +77,17 @@
     <xacro:pulley_arm name="pulley_arm_3" rotation="${4*pi/3}" />
     
     <xacro:sensor_l515 parent="base_link" name="camera_front">
-        <origin xyz="-0.65 0 -0.01" rpy="0 ${pi/2} ${pi}"/>
+        <origin xyz="${0.65 + pillar_diameter/2} 0 -0.01" rpy="0 ${pi/2} ${pi}"/>
     </xacro:sensor_l515>
     <xacro:sensor_l515 parent="base_link" name="camera_back">
-        <origin xyz="0.65 0 -0.01" rpy="0 ${pi/2} ${pi}"/>
+        <origin xyz="-0.285 0 -0.01" rpy="0 ${pi/2} 0"/>
     </xacro:sensor_l515>
 
-    <link name="front_cam_link"/>
+    <!-- <link name="front_cam_link"/>
     <joint name="front_cam_identity" type="fixed">
         <parent link="camera_link"/>
         <child link="front_cam_link"/>
-    </joint>
+    </joint> -->
 
     <!-- <xacro:sensor_l515 parent="base_link">
         <origin xyz="-1 0 -0.03" rpy="0 ${pi/2} ${pi}"/>
